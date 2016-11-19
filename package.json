@@ -1,0 +1,28 @@
+{
+  "name": "zhimu",
+  "version": "1.0.0",
+  "description": "download zhimu from shooter",
+  "main": "app.js",
+  "dependencies": {
+    "glob": "^7.1.1",
+    "request": "^2.78.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huntbao/zhimu.git"
+  },
+  "keywords": [
+    "zhimu",
+    "shooter"
+  ],
+  "author": "HuntBao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/huntbao/zhimu/issues"
+  },
+  "homepage": "https://github.com/huntbao/zhimu#readme"
+}
