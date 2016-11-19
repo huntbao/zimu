@@ -2,7 +2,10 @@
   "name": "zhimu",
   "version": "1.0.0",
   "description": "download zhimu from shooter",
-  "main": "app.js",
+  "main": "index.js",
+  "bin": {
+    "zhimu": "./index.js"
+  },
   "dependencies": {
     "glob": "^7.1.1",
     "request": "^2.78.0"
