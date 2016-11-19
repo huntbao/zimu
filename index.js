@@ -91,7 +91,7 @@ videoType.split(',').forEach((type) => {
     videoTypes += `*.${type}`
 })
 
-glob(`${dir}/(${videoTypes})`, function (er, files) {
+glob(`${dir}/**/?(${videoTypes})`, function (er, files) {
     let start = () => {
         if (files.length) {
             downloadSubtitle(files[0], () => {

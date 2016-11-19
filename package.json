@@ -4,10 +4,11 @@
   "description": "download zhimu from shooter",
   "main": "index.js",
   "bin": {
-    "zhimu": "./index.js"
+    "zhimu": "./bin/zhimu.js"
   },
   "dependencies": {
     "glob": "^7.1.1",
+    "minimist": "^1.2.0",
     "request": "^2.78.0"
   },
   "devDependencies": {},
