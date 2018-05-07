@@ -31,7 +31,10 @@ function downloadSubtitle(filename, cb) {
         fs.closeSync(fd)
         return hash
     }
-
+    const stats = fs.statSync(filename)
+    if (!stats.isFile()) {
+        return cb()
+    }
     let form = {
         filehash: getMd5Hash(filename),
         pathinfo: '',
@@ -51,7 +54,7 @@ function downloadSubtitle(filename, cb) {
             files = JSON.parse(body)
         } catch (e) {
             cb()
-            return console.error(`Server response error: ${e}`)
+            return console.error(`get ${filename}: Server response error: ${e}`)
         }
         files.forEach((file, idx) => {
             if (file.Delay) {
