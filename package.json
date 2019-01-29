@@ -1,12 +1,13 @@
 {
   "name": "zimu",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "download zimu from shooter",
   "main": "index.js",
   "bin": {
     "zimu": "./bin/zimu.js"
   },
   "dependencies": {
+    "chinese-conv": "^1.0.1",
     "glob": "^7.1.1",
     "minimist": "^1.2.0",
     "request": "^2.78.0"

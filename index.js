@@ -5,12 +5,13 @@
 let fs = require('fs')
 let request = require('request')
 let crypto = require('crypto')
-let glob = require("glob")
+let glob = require('glob')
 let parseArgs = require('minimist')
+let chineseConv = require('chinese-conv')
 
 const BLOCKSIZE = 4096
 
-function downloadSubtitle(filename, cb) {
+function downloadSubtitle(filename, cb, isSimplified) {
     function getMd5Hash() {
         let fd = fs.openSync(filename, 'r')
         let md5 = (position) => {
@@ -31,6 +32,7 @@ function downloadSubtitle(filename, cb) {
         fs.closeSync(fd)
         return hash
     }
+
     const stats = fs.statSync(filename)
     if (!stats.isFile()) {
         return cb()
@@ -42,7 +44,7 @@ function downloadSubtitle(filename, cb) {
         lang: 'Chn'
     }
     request.post({
-        url: 'https://shooter.cn/api/subapi.php',
+        url: 'http://shooter.cn/api/subapi.php',
         form: form
     }, (err, httpResponse, body) => {
         if (err) {
@@ -53,8 +55,8 @@ function downloadSubtitle(filename, cb) {
         try {
             files = JSON.parse(body)
         } catch (e) {
-            cb()
-            return console.error(`get ${filename}: Server response error: ${e}`)
+            console.error(`get ${filename}: Server response error: ${e}`)
+            return cb()
         }
         files.forEach((file, idx) => {
             if (file.Delay) {
@@ -73,8 +75,12 @@ function downloadSubtitle(filename, cb) {
             }, (error, data, body) => {
                 let fn = `${filename}.chn${idx || ''}.${file.Files[0].Ext}`
                 console.log(`Creating file: ${fn}`)
+                if (isSimplified) {
+                    console.log(`Convert to simplified chinese....`)
+                    body = chineseConv.sify(body)
+                }
                 fs.writeFileSync(fn, body)
-                if (idx == files.length - 1) {
+                if (idx === files.length - 1) {
                     console.log(`Done: ${filename}`)
                     cb()
                 }
@@ -86,6 +92,7 @@ function downloadSubtitle(filename, cb) {
 let argv = parseArgs(process.argv.slice(2))
 let dir = argv.p || process.cwd()
 let videoType = argv.t || 'mkv'
+let isSimplified = argv.s !== 'false'
 let videoTypes = ''
 videoType.split(',').forEach((type) => {
     if (videoTypes) {
@@ -100,7 +107,7 @@ glob(`${dir}/**/?(${videoTypes})`, function (er, files) {
             downloadSubtitle(files[0], () => {
                 files.shift()
                 start()
-            })
+            }, isSimplified)
         }
     }
     start()
